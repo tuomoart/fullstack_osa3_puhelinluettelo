@@ -1,0 +1,27 @@
+{
+  "name": "fullstack_osa3_puhelinluettelo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tuomoart/fullstack_osa3_puhelinluettelo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  },
+  "bugs": {
+    "url": "https://github.com/tuomoart/fullstack_osa3_puhelinluettelo/issues"
+  },
+  "homepage": "https://github.com/tuomoart/fullstack_osa3_puhelinluettelo#readme"
+}

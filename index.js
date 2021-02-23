@@ -1,7 +1,9 @@
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const static = require('static')
+const Person = require('./models/person')
 const app = express()
 
 app.use(express.json()) 
@@ -44,21 +46,27 @@ let persons = [
 ]
 
 app.get('/info', (req, res) => {
-    res.send(`<p>Phonebook has info for ${persons.length} people</p> <p>${new Date()}</p>`)
+    Person.find({}).then( people => {
+        res.send(`<p>Phonebook has info for ${people.length} people</p> <p>${new Date()}</p>`)
+    })
 })
 
 app.get('/api/persons', (req, res) => {
-    res.json(persons)
+    Person.find({}).then(people => {
+        res.json(people)
+    })
 })
 
 app.get('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const person = persons.find(person => person.id === id)
-    if (person) {
-        response.json(person)
-    } else {
-        response.status(404).end()
-    }
+    Person.findById(request.params.id).then(person => {
+        console.log(person)
+        if (person) {
+            response.json(person)
+        } else {
+            response.status(404).end()
+        }
+    })
+    
 })
 
 app.delete('/api/persons/:id', (request, response) => {
@@ -67,10 +75,6 @@ app.delete('/api/persons/:id', (request, response) => {
   
     response.status(204).end()
 })
-
-const generateId = () => {
-    return(Math.floor(Math.random()*1000000))
-  }
   
 app.post('/api/persons', (request, response) => {
     const body = request.body
@@ -89,15 +93,14 @@ app.post('/api/persons', (request, response) => {
         })
     }
   
-    const person = {
+    const person = new Person({
       name: body.name,
-      number: body.number,
-      id: generateId(),
-    }
+      number: body.number
+    })
   
-    persons = persons.concat(person)
-  
-    response.json(person)
+    person.save().then(savedPerson => {
+        response.json(person)
+    })
 })
   
 
